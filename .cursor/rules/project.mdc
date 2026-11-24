@@ -1,0 +1,48 @@
+---
+description: Stack, structure and conventions for this frontend assignment
+alwaysApply: true
+---
+
+# Project conventions
+
+## Stack
+
+- Next.js (App Router) with React Server Components, TypeScript in strict mode
+- Tailwind CSS v4 (CSS-first config in `src/app/globals.css`, no `tailwind.config`)
+- shadcn/ui (Base UI primitives) in `src/components/ui`, icons from `lucide-react`
+- Vitest + React Testing Library + jsdom for tests
+- Yarn 4 is the only package manager (`node-modules` linker). Never use npm or
+  pnpm, and never commit another lockfile.
+
+This Next.js version has breaking changes compared to older releases. Before
+using a Next.js API you are not sure about, read the matching guide in
+`node_modules/next/dist/docs/`.
+
+## Structure
+
+- `src/app` holds routes only: `page.tsx`, `layout.tsx`, `loading.tsx`,
+  `error.tsx`, `not-found.tsx`, `route.ts`.
+- `src/components` holds feature components; `src/components/ui` is generated
+  by shadcn and should only be changed through `yarn dlx shadcn@latest add`.
+- `src/lib` holds framework-agnostic helpers and types; `src/hooks` holds
+  client hooks.
+- Tests sit next to the code they cover as `*.test.ts(x)`.
+- Import through the `@/` alias, never with deep relative paths like `../../`.
+
+## Code style
+
+- Components are named function declarations with typed props
+  (`type FooProps = { ... }`). One exported component per file.
+- Default to Server Components. Add `"use client"` only to the smallest
+  component that needs state, effects, or browser APIs.
+- Style with Tailwind utilities and merge classes with `cn()`. No inline
+  `style` objects, no CSS modules unless asked.
+- Prefer semantic HTML and accessible names; every interactive element must be
+  usable with a keyboard.
+- Handle loading, empty and error states for any data the UI shows.
+- No `any`; narrow `unknown` instead. No non-null assertions unless proven.
+- Imports are sorted automatically by ESLint; run `yarn lint:fix`.
+
+## Before finishing a change
+
+Run `yarn validate` (typecheck, lint, format check, tests) and fix every failure.

@@ -1,0 +1,22 @@
+---
+description: How to write tests with Vitest and React Testing Library
+globs: src/**/*.test.ts,src/**/*.test.tsx
+alwaysApply: false
+---
+
+# Testing conventions
+
+- Vitest globals (`describe`, `it`, `expect`, `vi`) are enabled; do not import
+  them.
+- Query by what the user sees, in this order: `getByRole` (with `name`),
+  `getByLabelText`, `getByText`. Use `getByTestId` only as a last resort.
+- Drive interactions with `userEvent.setup()` from
+  `@testing-library/user-event`, not `fireEvent`.
+- Use `findBy*` / `waitFor` for async UI; never add fixed timeouts.
+- Mock network calls at the `fetch` boundary with `vi.spyOn(globalThis, "fetch")`
+  and restore mocks in `afterEach`.
+- Test behaviour, not implementation details: no assertions on internal state,
+  class names, or component instances.
+- Async Server Components cannot be rendered by React Testing Library. Extract
+  their data logic into `src/lib` and unit-test it, and test the presentational
+  child component separately.
